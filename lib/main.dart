@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:english_words/english_words.dart';
 import 'dart:developer';
+import 'package:icon_badge/icon_badge.dart';
+
+List<String> myCart = [];
 
 void main() {
   runApp(const MyApp());
@@ -15,7 +18,6 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   List<String> wordPairs = [];
-  List<String> myCart = [];
 
   void addToCart(value) {}
 
@@ -25,12 +27,8 @@ class _MyAppState extends State<MyApp> {
       home: Scaffold(
           appBar: AppBar(
             title: const Text("CHOOSE YOUR WORDS THEN ?????"),
-            actions: [
-              IconButton(
-                  onPressed: () {
-                    return;
-                  },
-                  icon: const Icon(Icons.shopping_cart))
+            actions: const [
+              CartDynamicIcon()
             ],
           ),
           body: ListView.builder(itemBuilder: (context, index) {
@@ -43,12 +41,34 @@ class _MyAppState extends State<MyApp> {
               trailing: IconButton(
                 onPressed: () {
                   myCart.add(wordPairs[index]);
-                  log('user has selected');
+                  log('user has selected this item');
                 },
                 icon: const Icon(Icons.add_box),
               ),
             );
           })),
+    );
+  }
+}
+
+class CartDynamicIcon extends StatefulWidget {
+  const CartDynamicIcon({Key? key}) : super(key: key);
+
+  @override
+  _CartDynamicIconState createState() => _CartDynamicIconState();
+}
+
+class _CartDynamicIconState extends State<CartDynamicIcon> {
+  @override
+  Widget build(BuildContext context) {
+    return IconBadge(
+      onTap: () {
+        return;
+      },
+      icon: const Icon(Icons.add_shopping_cart_sharp),
+      itemCount: myCart.length,
+      badgeColor: Colors.red,
+      itemColor: Colors.white,
     );
   }
 }
